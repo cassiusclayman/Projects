@@ -52,11 +52,26 @@ class Orders:
                     out += "Unable to process: {} cannot be ordered more than once".format(self.breakfast[2])
                 else:
                     out += ", {} cannot be ordered more than once".format(self.breakfast[2])
-        return out
-        # elif(meal == "Lunch"):
-        #
-        # elif(meal == "Dinner"):
 
+        elif(meal == "Lunch"):
+            if(counts[1] == 0):
+                out += "Unable to process: Main is missing"
+            if(counts[1] > 1):
+                out += "Unable to process: {} cannot be ordered more than once".format(self.lunch[1])
+            if(counts[2] == 0):
+                if(out == ""):
+                    out += "Unable to process: Side is missing"
+                else:
+                    out += ", side is missing"
+            if(counts[3] > 1):
+                if(out == ""):
+                    out += "Unable to process: {} cannot be ordered more than once".format(self.lunch[3])
+                else:
+                    out += ", {} cannot be ordered more than once".format(self.lunch[3])
+
+        # elif(meal == "Dinner"):
+        return out
+    
     def driver(self, line):
 
         while(True):
@@ -73,8 +88,7 @@ class Orders:
             counts = self.count(sortedLst)
             if line[0] == "Breakfast":
 
-                # check order validity
-                valid = self.validOrder("Breakfast", counts)
+                valid = self.validOrder("Breakfast", counts)  # check order validity
                 if(valid != ""):
                     return valid
 
@@ -91,17 +105,38 @@ class Orders:
                         if(counts[key] > 0):
                             out += self.breakfast[key] + ", "
 
-                return out
+            elif line[0] == "Lunch":
 
-            # elif line[0] == "Lunch":
-            #     sideCount
+                valid = self.validOrder("Lunch", counts)
+                if(valid != ""):
+                    return valid
+
+                for key in counts:
+
+                    if(key == 3):
+                        if counts[key] > 0:
+                            out += self.lunch[key]
+                        else:
+                            out += "Water"
+                    elif(key == 2):
+                        if(counts[key]) > 0:
+                            if(counts[key] < 2):
+                                out += "Chips, "
+                            else:
+                                out += "Chips({}), ".format(counts[key])
+                    else:
+                        if(counts[key] > 0):
+                            out += self.lunch[key] + ", "
+            return out
+
+
 
 
             # elif line[0] == "Dinner":
 
 def main():
     test = Orders()
-    print(test.driver("Breakfast 2, 1, 3, 3, 3"))
+    print(test.driver("Lunch 1, 2, 2"))
 
 
 if __name__ == "__main__":
