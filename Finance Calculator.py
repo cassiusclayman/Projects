@@ -56,13 +56,13 @@ class PersonFinance:
         while(True):
             try:
                 print("\nLet's calculate your next paycheck!")
-                self.payInf["rate"] = float(input("Please enter your hourly rate: "))
+                self.payInf["rate"] = float(input("Please enter your hourly pay rate: "))
                 self.payInf["hours"] = float(input("Please enter your expected hours worked over this pay period: "))
                 self.payInf["tax"] = float(input(
                     "Please enter the percentage you usually get taxed on your income (e.g. 15, 25, etc.) : ")) / 100  # presents tax in decimal form (e.g. 15% as .15)
                 print()
                 self.payInf["pay"] = (self.payInf["rate"] * self.payInf["hours"]) * (1 - self.payInf["tax"])
-                print("You'll get paid ${:.2f}!\n".format(self.pay))
+                print("You'll get paid ${:.2f}!\n".format(self.payInf["pay"]))
                 break
             except:
                 print("Sorry, there was an error. Please make sure you enter numerical amounts as digits (e.g. 1, 2, 300).")
