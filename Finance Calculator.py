@@ -13,11 +13,11 @@ class PersonFinance:
     payInf = {}
     bills = {}
 
-    # TODO calculate gross income, implement functions to find investment returns for savings accounts and investment
+    # TODO implement functions to find investment returns for investment
     #  accounts like a roth IRA or 401k (include company match and pre-tax deductions for 401k)
     def __init__(self):
-        self.balances = {"saving": 0.0, "checking": 0.0, "total": 0.0}
-        self.payInf = {"rate": 0.0, "hours": 0.0, "tax": 0.0, "pay": 0.0}
+        self.balances = {"saving": 0.0, "savingInt": 0.0, "checking": 0.0, "total": 0.0}
+        self.payInf = {"rate": 0.0, "hours": 0.0, "tax": 0.0, "grossPay": 0.0, "netPay": 0.0}
         self.bills = {"total": 0.0}
 
         # self.saving = -1    # savings balance
@@ -58,11 +58,15 @@ class PersonFinance:
                 print("\nLet's calculate your next paycheck!")
                 self.payInf["rate"] = float(input("Please enter your hourly pay rate: "))
                 self.payInf["hours"] = float(input("Please enter your expected hours worked over this pay period: "))
-                self.payInf["tax"] = float(input(
-                    "Please enter the percentage you usually get taxed on your income (e.g. 15, 25, etc.) : ")) / 100  # presents tax in decimal form (e.g. 15% as .15)
-                print()
-                self.payInf["pay"] = (self.payInf["rate"] * self.payInf["hours"]) * (1 - self.payInf["tax"])
-                print("You'll get paid ${:.2f}!\n".format(self.payInf["pay"]))
+                inp = input(
+                    "Please enter the percentage you usually get taxed on your income (e.g. 15, 25, etc.) : ")
+                inp = inp.replace("%", "")  # If user enters the rate with a % symbol, replace it
+                self.payInf["tax"] = float(inp) / 100  # presents tax in decimal form (e.g. 15% as .15)
+
+                self.payInf["grossPay"] = self.payInf["rate"] * self.payInf["hours"]
+                self.payInf["netPay"] = self.payInf["grossPay"] * (1 - self.payInf["tax"])
+                print("\nYour gross pay is ${:.2f} and your net pay is ${:.2f}!\n".format(self.payInf["grossPay"],
+                                                                                        self.payInf["netPay"]))
                 break
             except:
                 print("Sorry, there was an error. Please make sure you enter numerical amounts as digits (e.g. 1, 2, 300).")
@@ -81,7 +85,8 @@ class PersonFinance:
             try:
                 line = input("Enter the arithmetic operator along with the corresponding amount: ")
                 if (line == ""):
-                    print("All of your bills add up to ${:.2f}".format(self.bills["total"]))
+                    input("All of your bills add up to ${:.2f}. Please enter any key to exit.".format(self.bills["total"]))
+                    input("\nPlease enter any key to exit.")
                     break
                 elif ((line[0] == '+' and line[1] != " " and eval(line[1:]))
                       or (line[0] == '-' and line[1] != " " and eval(line[1:]))):
@@ -100,6 +105,49 @@ class PersonFinance:
                 print("Sorry, there was an error. Please make sure you only enter one arithmetic operator and one "
                       "numeric amount. (e.g. + 400, - 20, etc.)")
 
+    def __saveInvestCalc(self):
+        print("\nLet's calculate your savings account returns!")
+        while(True):
+            if(self.balances["saving"] == 0.0):
+                self.balances["saving"] = float(input("Please enter your savings account balance (e.g. 10, 100, 1000, "
+                                                      "etc.): "))
+            print("Your current savings balance is ${:.2f}.".format(self.balances["saving"]))
+
+            inp = input("Please enter the yearly interest rate on your savings accounts"
+                        " (If you are unsure, the yearly rate is currently around 0.40~):")
+            inp = inp.replace("%", "")  # If user enters the rate with a % symbol, replace it
+            self.balances["savingInt"] = float(inp) / 100
+
+            contrib = float(input("Saving accounts generally pay interest monthly, so any extra contributions to the "
+                                  "account will also gain interest. Please enter your monthly contribution to the "
+                                  "savings account: "))
+            monthlyInt = self.balances["savingInt"] / 12    # calculate and store monthly interest rate
+            endTotal = self.balances["saving"]
+            for n in range(12):
+                endTotal += contrib     # add monthly contribution to the account
+                endTotal = endTotal + (endTotal * monthlyInt)   # add earned interest to the account
+            print("Starting with a balance of ${:.2f}, an interest rate of {}%, and a monthly contribution of ${:.2f},".format(
+                self.balances["saving"], self.balances["savingInt"]*100, contrib))
+
+            totalNoInt = self.balances["saving"] + (contrib * 12)
+
+            print("your savings total after only contributions will be: "
+                  "${:.2f}, the interest you'll earn will be ${:.2f}".format(totalNoInt, (endTotal - totalNoInt)),
+                  "and your total account balance after including interest earned will be ${:.2f}".format(endTotal))
+            input("\nPlease enter any key to exit.")
+            break
+
+    def __investCalc(self):
+        print("Let's calculate your returns on your investment accounts! Currently, only 401k and Roth IRA's are"
+              "supported.")
+        while True:
+            mode = input("Please enter either 401k, Roth IRA, or hit enter to quit: ")
+            if(mode == ""):
+                
+
+
+
+
     def driver(self):
         """
         Driver method
@@ -107,11 +155,11 @@ class PersonFinance:
         print("\nWelcome to Finance Calculator!")
         while (True):
             print("Please enter the letter option for what you want to calculate today. \nYour options are: "
-                  "A)Total Finances (Post Bills), B) Accounts and Total Pay, C) Pay After Taxes, Z) Description of "
-                  "Options.\n"
+                  "A)Total Finances (Post Bills), B) Accounts and Total Pay, C) Pay After Taxes, D) Savings Returns, "
+                  "E) Investment Returns, Z) Description of Options.\n"
                   "You may also simply hit the enter key to end the program! (Note: If you'd like to see a "
                   "description of the options available, please enter Z)")
-            chk = input("\nEnter A, B, C, or hit enter for your choice:\n")
+            chk = input("\nEnter A, B, C, D, Z, or hit enter to quit:\n")
 
             if chk == "":
                 print("Thank you for using Finance Calculator!")
@@ -139,10 +187,11 @@ class PersonFinance:
                 #       "Post-bill balance: ${:.2f}\n".format(self.balances["total"] - self.bills["total"])
                 #       )
                 print("\nYour current financial situation looks like this:\n"
-                      "Savings: ${:.2f}\nChecking: ${:.2f}\nIncoming pay: ${:.2f}\nPre-bill balances: ${:.2f}\nTotal "
+                      "Savings: ${:.2f}\nChecking: ${:.2f}\nGross pay: ${:.2f}\nNet pay: ${:.2f}\nPre-bill balances: ${:.2f}\nTotal "
                       "bills: ${:.2f}\nPost-bill balance: ${:.2f}\n".format(self.balances["saving"],
-                                                                            self.balances["checking"], self.payInf["pay"],
-                                                                            self.balances["total"],self.bills["total"],
+                                                                            self.balances["checking"],
+                                                                            self.payInf["grossPay"], self.payInf["netPay"],
+                                                                            self.balances["total"], self.bills["total"],
                                                                             self.balances["total"] - self.bills["total"]))
                 # Completed
 
@@ -167,6 +216,12 @@ class PersonFinance:
                 self.__payCalc()
                 print("Altogether, you'll have ${:.2f}.".format(self.balances["total"] + self.payInf["pay"]))
                 # Completed
+
+            elif chk.upper() == 'D':
+                '''
+                Savings Return
+                '''
+                self.__saveInvestCalc()
             elif chk.upper() == 'Z':
                 '''
                 Description of Options
