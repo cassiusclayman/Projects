@@ -2,7 +2,7 @@
 Hello! My name is Ali Bokhari and this is my projects repository! It's a bit rudimentary but I am still pretty proud of my financial calculator, so please check it out. 
 Please let me know if you have any questions or comments!
 
-# Finance Calculator  
+# Financial Calculator ("Finance Calculator.py")
   This program was built in an effort to streamline the calculations I used to manually perform (several times a week) to understand how my overall financial situation looked at the time.
   
   At the time of writing, this program supports six functions that are presented to the user through an interface that asks for their input. 
