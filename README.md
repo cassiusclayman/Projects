@@ -23,5 +23,5 @@ Please let me know if you have any questions or comments!
   
   
 
-# Orders 
+# Orders ("Orders.py"
   This is a one-off project that was created within 3 hours. It is essentially a rudimentary ordering system for a hypothetical restaurant that enforces rules on what can, cannot, and must be ordered at each meal in the day.
