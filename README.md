@@ -24,4 +24,4 @@ Ali Bokhari's Projects
   
 
 # Orders 
-  This is a one-off project that was created within 3 hours to create a rudimentary ordering system for a hypothetical restaurant that enforces rules on what can, cannot, and must be ordered at each meal in the day.
+  This is a one-off project that was created within 3 hours. It is essentially a rudimentary ordering system for a hypothetical restaurant that enforces rules on what can, cannot, and must be ordered at each meal in the day.
