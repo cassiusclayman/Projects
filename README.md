@@ -3,13 +3,13 @@ Ali Bokhari's Projects
 
 
 # Finance Calculator  
-  This program was built in an effort to streamline the calculations I would manually perform (several times a week) to understand how my overall financial situation looked at the time.
+  This program was built in an effort to streamline the calculations I used to manually perform (several times a week) to understand how my overall financial situation looked at the time.
   
   At the time of writing, this program supports six functions that are presented to the user through an interface that asks for their input. 
   
   The functions consist of the following:
   
-  Option A) Takes the user through all the steps necessary to provide a complete picture of their current financial situation (includes pay and balance calculations, excludes savings          and investment return calculations).
+  Option A) Takes the user through all the steps necessary to provide a complete picture of their current financial situation (includes pay and balance calculations, excludes savings and investment return calculations).
   
   Option B) Calculates the user's current account balances and net & gross income.
   
